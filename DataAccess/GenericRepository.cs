@@ -11,10 +11,10 @@ namespace DataAccess
 {
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
-        internal PopulationAndHouseholdDataContext context;
+        internal ApprovalManagementSystemContext context;
         internal DbSet<TEntity> dbSet;
 
-        public GenericRepository(PopulationAndHouseholdDataContext context)
+        public GenericRepository(ApprovalManagementSystemContext context)
         {
             this.context = context;
             this.dbSet = context.Set<TEntity>();

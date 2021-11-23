@@ -5,8 +5,8 @@ namespace IDataAccess
 {
     public interface IUnitOfWork
     {
-        IRequestInfoRepository EstimateDataRepository();
-        IApprovaInfoRepository ActualDataRepository();
+        IRequestInfoRepository RequestInfoRepository();
+        IApprovalInfoRepository ApprovalInfoRepository();
         Task SaveAsync();
         ValueTask DisposeAsync();
     }

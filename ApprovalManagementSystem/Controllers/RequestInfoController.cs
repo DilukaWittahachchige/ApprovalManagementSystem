@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ApprovalManagementSystem.Models;
+using Domain;
+using IBusinessServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,40 +11,55 @@ using System.Threading.Tasks;
 
 namespace ApprovalManagementSystem.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/request")]
     [ApiController]
     public class RequestInfoController : ControllerBase
     {
-        // GET: api/<RequestInfoController>
+
+        private readonly IRequestInfoService _requestInfoService;
+
+        public RequestInfoController(IRequestInfoService approvalInfoService)
+        {
+            this._requestInfoService = approvalInfoService;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IActionResult> LoadAllActiveAsync([ModelBinder(BinderType = typeof(CustomModelBinder))] RequestQuery query)
         {
-            return new string[] { "value1", "value2" };
+            // TODO: Need to change 
+            var requestInfoList = await this._requestInfoService.LoadAllByIdAsync(1);
+
+            if (requestInfoList == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(requestInfoList.Select(x => ConvertToModel(x)));
         }
 
-        // GET api/<RequestInfoController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        private static RequestInfoModel ConvertToModel(RequestInfoDto obj)
         {
-            return "value";
-        }
+            if (obj == null)
+            {
+                return new RequestInfoModel();
+            }
 
-        // POST api/<RequestInfoController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<RequestInfoController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<RequestInfoController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return new RequestInfoModel()
+            {
+               Id = obj.Id,  
+               CreateUserId =  obj.CreateUserId, 
+               RequestInfo = obj.RequestInfo, 
+               Status = obj.Status 
+            };
         }
     }
 }

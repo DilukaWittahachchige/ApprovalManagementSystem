@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace DataAccess
 {
-    public class ApprovalInfoRepository : GenericRepository<ApprovaInfoEntity>, IApprovaInfoRepository
+    public class ApprovalInfoRepository : GenericRepository<ApprovaInfoEntity>, IApprovalInfoRepository
     {
         /// <summary>
         ///  Constructer
         /// </summary>
         /// <param name="context"></param>
-        public ApprovalInfoRepository(PopulationAndHouseholdDataContext context)
+        public ApprovalInfoRepository(ApprovalManagementSystemContext context)
            : base(context)
         {
 

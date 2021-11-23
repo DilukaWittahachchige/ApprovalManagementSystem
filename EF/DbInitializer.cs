@@ -4,7 +4,7 @@ namespace EF
 {
     public static class DbInitializer
     {
-        public static void Initialize(PopulationAndHouseholdDataContext context)
+        public static void Initialize(ApprovalManagementSystemContext context)
         {
             context.Database.EnsureCreated();
             //context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;

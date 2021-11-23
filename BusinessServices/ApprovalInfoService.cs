@@ -35,11 +35,8 @@ namespace BusinessServices
         {
             try
             {
-                var approvaInfoList = new List<ApprovaInfoDto>();
-
-               
-
-                return approvaInfoList;
+                var approvaInfoList = await _unityOfWork.ApprovalInfoRepository().GetAsync();
+                return approvaInfoList?.Select(x => ConvertToDomain(x));
             }
             catch (Exception ex)
             {
@@ -55,7 +52,7 @@ namespace BusinessServices
         /// <param name="obj"></param>
         /// <param name="isActual"></param>
         /// <returns></returns>
-        private static ApprovaInfoDto ConvertToDomainActual(ApprovaInfoEntity obj)
+        private static ApprovaInfoDto ConvertToDomain(ApprovaInfoEntity obj)
         {
             if (obj == null)
             {

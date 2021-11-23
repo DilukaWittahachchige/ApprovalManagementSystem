@@ -14,7 +14,7 @@ namespace DI
                 var services = scope.ServiceProvider;
                 try
                 {
-                    var context = services.GetRequiredService<PopulationAndHouseholdDataContext>();
+                    var context = services.GetRequiredService<ApprovalManagementSystemContext>();
                     DbInitializer.Initialize(context);
                 }
                 catch (Exception ex)

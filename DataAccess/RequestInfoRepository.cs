@@ -15,7 +15,7 @@ namespace DataAccess
         ///  Constructer
         /// </summary>
         /// <param name="context"></param>
-        public RequestInfoRepository(PopulationAndHouseholdDataContext context)
+        public RequestInfoRepository(ApprovalManagementSystemContext context)
            : base(context)
         {
 

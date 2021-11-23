@@ -22,7 +22,7 @@ namespace DI
 
             Configuration = builder.Build();
 
-            services.AddDbContext<PopulationAndHouseholdDataContext>();
+            services.AddDbContext<ApprovalManagementSystemContext>();
 
             //provides helpful error information in the development environment
             services.AddDatabaseDeveloperPageExceptionFilter();
@@ -32,7 +32,7 @@ namespace DI
 
             //DAL DI
             //ASP.Net Core includes a simple container represented by the IServiceProvider interface
-            services.AddScoped<IApprovaInfoRepository, ApprovalInfoRepository>();
+            services.AddScoped<IApprovalInfoRepository, ApprovalInfoRepository>();
             services.AddScoped<IRequestInfoRepository, RequestInfoRepository>();
        
             //Unity of work - DAL repos 

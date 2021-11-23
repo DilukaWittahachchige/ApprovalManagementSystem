@@ -26,11 +26,8 @@ namespace BusinessServices
         {
             try
             {
-                var requestInfoList = new List<RequestInfoDto>();
-
-
-
-                return requestInfoList;
+               var requestInfoList = await _unityOfWork.RequestInfoRepository().GetAsync();
+               return requestInfoList?.Select(x => ConvertToDomain(x));
             }
             catch (Exception ex)
             {
@@ -39,7 +36,7 @@ namespace BusinessServices
             }
         }
  
-        private static RequestInfoDto ConvertToDomainActual(RequestInfoEntity obj)
+        private static RequestInfoDto ConvertToDomain(RequestInfoEntity obj)
         {
             if (obj == null)
             {

@@ -4,7 +4,7 @@ using System;
 
 namespace EF
 {
-    public class PopulationAndHouseholdDataContext : DbContext
+    public class ApprovalManagementSystemContext : DbContext
     {
 
         public DbSet<ApprovaInfoEntity> ActualData { get; set; }
@@ -14,7 +14,7 @@ namespace EF
 
         public string DbPath { get; private set; }
 
-        public PopulationAndHouseholdDataContext()
+        public ApprovalManagementSystemContext()
         {
 
             DbPath = AppDomain.CurrentDomain.BaseDirectory;

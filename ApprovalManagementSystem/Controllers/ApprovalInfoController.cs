@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ApprovalManagementSystem.Models;
+using BusinessServices;
+using Domain;
+using IBusinessServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,40 +12,56 @@ using System.Threading.Tasks;
 
 namespace ApprovalManagementSystem.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/approval")]
     [ApiController]
     public class ApprovalInfoController : ControllerBase
     {
-        // GET: api/<ApprovalInfoController>
+
+        private readonly IApprovelInfoService _approvelInfoService;
+
+        public ApprovalInfoController(IApprovelInfoService approvelInfoService)
+        {
+            this._approvelInfoService = approvelInfoService;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IActionResult> LoadAllActiveAsync([ModelBinder(BinderType = typeof(CustomModelBinder))] RequestQuery query)
         {
-            return new string[] { "value1", "value2" };
+            // TODO: Need to change 
+            var approvelInfoList = await this._approvelInfoService.LoadAllByIdAsync(1);
+
+            if (approvelInfoList == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(approvelInfoList.Select(x => ConvertToModel(x)));
         }
 
-        // GET api/<ApprovalInfoController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        private static ApprovalInfoModel ConvertToModel(ApprovaInfoDto obj)
         {
-            return "value";
-        }
+            if (obj == null)
+            {
+                return new ApprovalInfoModel();
+            }
 
-        // POST api/<ApprovalInfoController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<ApprovalInfoController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<ApprovalInfoController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return new ApprovalInfoModel()
+            {
+                Id = obj.Id,
+                ManagerId = obj.ManagerId,
+                RequestId = obj.RequestId,
+                IsApproved = obj.IsApproved,
+                Comment = obj.Comment 
+            };
         }
     }
 }

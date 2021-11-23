@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace IDataAccess
 {
-    public interface IApprovaInfoRepository : IGenericRepository<ApprovaInfoEntity>
+    public interface IApprovalInfoRepository : IGenericRepository<ApprovaInfoEntity>
     {
         Task<IEnumerable<ApprovaInfoEntity>> LoadByRequestIdAsync();
     }

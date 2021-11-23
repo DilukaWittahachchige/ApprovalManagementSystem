@@ -8,15 +8,15 @@ namespace DataAccess
 {
     public class UnitOfWork : IAsyncDisposable, IUnitOfWork
     {
-        private PopulationAndHouseholdDataContext context = new PopulationAndHouseholdDataContext
+        private ApprovalManagementSystemContext context = new ApprovalManagementSystemContext
             ();
         //Private Field for actual data repository and estimate data repositor
-        private readonly IApprovaInfoRepository _actualDataRepository;
+        private readonly IApprovalInfoRepository _actualDataRepository;
         private readonly IRequestInfoRepository _estimateDataRepository;
 
         //Constructor Dependency Injection
         public UnitOfWork(
-            IApprovaInfoRepository actualDataRepository,
+            IApprovalInfoRepository actualDataRepository,
             IRequestInfoRepository estimateDataRepository
             )
         {
@@ -24,12 +24,12 @@ namespace DataAccess
             this._estimateDataRepository = estimateDataRepository;
         }
 
-        public IApprovaInfoRepository ActualDataRepository()
+        public IApprovalInfoRepository ApprovalInfoRepository()
         {
             return this._actualDataRepository;
         }
 
-        public IRequestInfoRepository EstimateDataRepository()
+        public IRequestInfoRepository RequestInfoRepository()
         {
             return this._estimateDataRepository;
         }
