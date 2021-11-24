@@ -33,6 +33,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{29258C31-BBF9-4CFA-A671-0D7F6714EE19}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scheduler", "Scheduler", "{EDC37A12-6499-4CE5-8FEC-39CBDE275DAA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailScheduler", "EmailScheduler\EmailScheduler.csproj", "{E32F6B95-11B1-4C5A-ADCE-B192D895BE30}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +83,10 @@ Global
 		{29258C31-BBF9-4CFA-A671-0D7F6714EE19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29258C31-BBF9-4CFA-A671-0D7F6714EE19}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29258C31-BBF9-4CFA-A671-0D7F6714EE19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E32F6B95-11B1-4C5A-ADCE-B192D895BE30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E32F6B95-11B1-4C5A-ADCE-B192D895BE30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E32F6B95-11B1-4C5A-ADCE-B192D895BE30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E32F6B95-11B1-4C5A-ADCE-B192D895BE30}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -93,6 +101,7 @@ Global
 		{14154AF8-8F55-4BF2-8B2C-EBE1FE3B6F6F} = {37B5A0A3-1460-4729-B65A-EE5A10591119}
 		{8BEC3474-3545-44E3-845C-B9BC73A0C9D5} = {37B5A0A3-1460-4729-B65A-EE5A10591119}
 		{29258C31-BBF9-4CFA-A671-0D7F6714EE19} = {B83BC10F-7A57-4091-A3B2-0D7860F87788}
+		{E32F6B95-11B1-4C5A-ADCE-B192D895BE30} = {EDC37A12-6499-4CE5-8FEC-39CBDE275DAA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AB4047D4-FFA7-4C43-AA26-60C8386AEE93}

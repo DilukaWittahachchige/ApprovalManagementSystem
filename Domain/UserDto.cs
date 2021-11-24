@@ -1,4 +1,4 @@
-﻿using Common.Enum;
+﻿using Domain.Enum;
 using System;
 
 namespace Domain

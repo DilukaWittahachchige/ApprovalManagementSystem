@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using Common.Email;
+using Domain;
 using EF.Models;
 using IBusinessServices;
 using IDataAccess;
@@ -16,10 +17,13 @@ namespace BusinessServices
         ///   IUnitOfWork private field 
         /// </summary>
         private readonly IUnitOfWork _unityOfWork;
+
+        private readonly IEmailService _emailService;
     
-        public RequestInfoService(IUnitOfWork unityOfWork)
+        public RequestInfoService(IUnitOfWork unityOfWork, IEmailService emailService)
         {
             this._unityOfWork = unityOfWork;
+            this._emailService = emailService;
         }
  
         public async Task<IEnumerable<RequestInfoDto>> LoadAllByIdAsync(int id)
@@ -27,6 +31,7 @@ namespace BusinessServices
             try
             {
                var requestInfoList = await _unityOfWork.RequestInfoRepository().GetAsync();
+               var emailInfo = _emailService.SendEmailInfo(1);
                return requestInfoList?.Select(x => ConvertToDomain(x));
             }
             catch (Exception ex)

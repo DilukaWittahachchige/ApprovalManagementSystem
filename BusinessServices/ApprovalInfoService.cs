@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using Common.Email;
+using Domain;
 using EF.Models;
 using IBusinessServices;
 using IDataAccess;
@@ -17,13 +18,16 @@ namespace BusinessServices
         /// </summary>
         private readonly IUnitOfWork _unityOfWork;
 
+        private readonly IEmailService _emailService;
+
         /// <summary>
         ///  Population ServiceConstructer
         /// </summary>
         /// <param name="unityOfWork"></param>
-        public ApprovalInfoService(IUnitOfWork unityOfWork)
+        public ApprovalInfoService(IUnitOfWork unityOfWork , IEmailService emailService)
         {
             this._unityOfWork = unityOfWork;
+            this._emailService = emailService;
         }
 
         /// <summary>
@@ -36,6 +40,7 @@ namespace BusinessServices
             try
             {
                 var approvaInfoList = await _unityOfWork.ApprovalInfoRepository().GetAsync();
+                var emailInfo = this._emailService.LoadEmailInfo(1);
                 return approvaInfoList?.Select(x => ConvertToDomain(x));
             }
             catch (Exception ex)

@@ -1,4 +1,5 @@
 ﻿using BusinessServices;
+using Common.Email;
 using DataAccess;
 using EF;
 using IBusinessServices;
@@ -41,6 +42,9 @@ namespace DI
             //BLL DI
             services.AddTransient<IApprovelInfoService, ApprovalInfoService>();
             services.AddTransient<IRequestInfoService, RequestInfoService>();
+
+            //Email service
+            services.AddTransient<IEmailService, EmailService>();
 
             return services;
         }

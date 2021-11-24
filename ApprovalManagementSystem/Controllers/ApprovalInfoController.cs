@@ -14,7 +14,7 @@ namespace ApprovalManagementSystem.Controllers
 {
     [Route("api/approval")]
     [ApiController]
-    public class ApprovalInfoController : ControllerBase
+     public class ApprovalInfoController : ControllerBase
     {
 
         private readonly IApprovelInfoService _approvelInfoService;
