@@ -24,7 +24,7 @@ namespace BusinessServices
         ///  Population ServiceConstructer
         /// </summary>
         /// <param name="unityOfWork"></param>
-        public ApprovalInfoService(IUnitOfWork unityOfWork , IEmailService emailService)
+        public ApprovalInfoService(IUnitOfWork unityOfWork, IEmailService emailService)
         {
             this._unityOfWork = unityOfWork;
             this._emailService = emailService;
@@ -40,7 +40,9 @@ namespace BusinessServices
             try
             {
                 var approvaInfoList = await _unityOfWork.ApprovalInfoRepository().GetAsync();
-                var emailInfo = this._emailService.LoadEmailInfo(1);
+                var emailInfo = await this._emailService.LoadEmailInfo(1);
+                var replyInfo = LoadReplyUserInfo(emailInfo.ToList().FirstOrDefault().To);
+
                 return approvaInfoList?.Select(x => ConvertToDomain(x));
             }
             catch (Exception ex)
@@ -73,6 +75,17 @@ namespace BusinessServices
                 IsApproved = obj.IsApproved
             };
         }
-   
+
+        private string[] LoadReplyUserInfo(string replyToAddress)
+        {
+            //String replyFor = replyToAddress;
+            //Int64 userId = Convert.ToInt64(replyFor.Substring(replyFor.StartsWith("+") + 3, replyFor.LastIndexOf("un")));
+            //var info =  replyFor.Substring(replyFor.LastIndexOf("un") + 2, replyFor.IndexOf("@") - replyFor.LastIndexOf("un") - 2);
+
+            var replyInfo = new string[2];
+
+            return replyInfo;
+        }
+
     }
 }

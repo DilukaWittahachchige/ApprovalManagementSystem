@@ -10,6 +10,6 @@ namespace Common.Email
     public interface IEmailService
     {
         Task<IEnumerable<POPEmail>> LoadEmailInfo(int employeeId);
-        Task SendEmailInfo(int employeeId);
+        Task SendEmailInfo(int employeeId, int requestId);
     }
 }

@@ -19,4 +19,8 @@
     <ProjectReference Include="..\DI\DI.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Client\" />
+  </ItemGroup>
+
 </Project>
