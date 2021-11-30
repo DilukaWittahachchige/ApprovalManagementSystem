@@ -9,6 +9,6 @@ namespace IBusinessServices
 {
     public interface IApprovelInfoService
     {
-        Task<IEnumerable<ApprovaInfoDto>> LoadAllByIdAsync(int id);
+        Task<IEnumerable<ApprovaInfoDto>> LoadAllByIdAsync(int requestId);
     }
 }

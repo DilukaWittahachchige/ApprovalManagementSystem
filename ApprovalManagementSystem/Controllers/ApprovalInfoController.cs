@@ -32,7 +32,7 @@ namespace ApprovalManagementSystem.Controllers
         public async Task<IActionResult> LoadAllActiveAsync([ModelBinder(BinderType = typeof(CustomModelBinder))] RequestQuery query)
         {
             // TODO: Need to change 
-            var approvelInfoList = await this._approvelInfoService.LoadAllByIdAsync(1);
+            var approvelInfoList = await this._approvelInfoService.LoadAllByIdAsync(2);
 
             if (approvelInfoList == null)
             {

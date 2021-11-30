@@ -9,7 +9,7 @@ namespace Common.Email
 {
     public interface IEmailService
     {
-        Task<IEnumerable<POPEmail>> LoadEmailInfo(int employeeId);
-        Task SendEmailInfo(int employeeId, int requestId);
+        Task<bool> SendApprovalRequestAsync(int managerId, int requestId, string managerEmail);
+        ApprovaInfoDto LoadReplyByRequestIdAsync(int managerId, int requestId);
     }
 }

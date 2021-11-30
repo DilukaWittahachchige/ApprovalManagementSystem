@@ -35,23 +35,40 @@ namespace BusinessServices
         /// </summary>
         /// <param name="stateIdList"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<ApprovaInfoDto>> LoadAllByIdAsync(int id)
+        public async Task<IEnumerable<ApprovaInfoDto>> LoadAllByIdAsync(int requestId)
         {
             try
             {
-                var approvaInfoList = await _unityOfWork.ApprovalInfoRepository().GetAsync();
-                var emailInfo = await this._emailService.LoadEmailInfo(1);
-                var replyInfo = LoadReplyUserInfo(emailInfo.ToList().FirstOrDefault().To);
+                var reqApprovalStatus = new List<ApprovaInfoDto>();
+                var allApprovalInfoList = await _unityOfWork.ApprovalInfoRepository().GetAsync();
+                var reqApprovalInfo = allApprovalInfoList.ToList().Where(x => x.RequestId == requestId);
 
-                return approvaInfoList?.Select(x => ConvertToDomain(x));
+                reqApprovalInfo.ToList().ForEach(x =>
+                {
+                    var replyEmailInfo = this._emailService.LoadReplyByRequestIdAsync(x.ManagerId, x.RequestId);
+                    if(replyEmailInfo == null)
+                    {
+                        replyEmailInfo = new ApprovaInfoDto();
+                        replyEmailInfo.IsApproved = null;
+                        replyEmailInfo.ManagerId = x.ManagerId;
+                        replyEmailInfo.RequestId = x.RequestId;
+                        reqApprovalStatus.Add(replyEmailInfo);
+                    }
+                    else
+                    {
+                        reqApprovalStatus.Add(replyEmailInfo);
+                    }
+                });
+
+                //return approvaInfoList?.Select(x => ConvertToDomain(x));
+                return reqApprovalStatus;
             }
             catch (Exception ex)
-            {
+            {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
                 //TODO: Global exception handling 
                 throw ex.InnerException;
             }
         }
-
 
         /// <summary>
         /// 
@@ -74,17 +91,6 @@ namespace BusinessServices
                 RequestId = obj.RequestId,
                 IsApproved = obj.IsApproved
             };
-        }
-
-        private string[] LoadReplyUserInfo(string replyToAddress)
-        {
-            //String replyFor = replyToAddress;
-            //Int64 userId = Convert.ToInt64(replyFor.Substring(replyFor.StartsWith("+") + 3, replyFor.LastIndexOf("un")));
-            //var info =  replyFor.Substring(replyFor.LastIndexOf("un") + 2, replyFor.IndexOf("@") - replyFor.LastIndexOf("un") - 2);
-
-            var replyInfo = new string[2];
-
-            return replyInfo;
         }
 
     }

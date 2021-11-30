@@ -21,7 +21,99 @@ namespace Common.Email
         /// </summary>
         static bool mailSent = false;
 
-        public async Task<IEnumerable<POPEmail>> LoadEmailInfo(int employeeId)
+
+
+        public async Task<bool> SendApprovalRequestAsync(int managerId, int requestId, string managerEmail)
+        {
+
+            try
+            {
+
+                String sReplyToadd = "replyams757@gmail.com";
+                String replyToAddress = sReplyToadd.Substring(0, sReplyToadd.IndexOf('@')) + "+on+" + managerId + "+" + requestId + "+un" + sReplyToadd.Substring(sReplyToadd.IndexOf('@'), sReplyToadd.Length - sReplyToadd.IndexOf('@'));
+
+                // Command-line argument must be the SMTP host.
+                SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
+                // Specify the email sender.
+                // Create a mailing address that includes a UTF8 character
+                // in the display name.
+                MailAddress from = new MailAddress("usertestuserlast46@gmail.com",
+                   "user8767 " + (char)0xD8 + " testUserLastName",
+                System.Text.Encoding.UTF8);
+                // Set destinations for the email message.
+                MailAddress to = new MailAddress(managerEmail);
+                // Specify the message content.
+                using (MailMessage message = new MailMessage(from, to))
+                {
+                    message.Body = "This is a test email message sent by an application. Please do not change the To address to map your reply properly to the system.";
+                    // Include some non-ASCII characters in body and subject.
+                    string someArrows = new string(new char[] { '\u2190', '\u2191', '\u2192', '\u2193' });
+                    message.Priority = MailPriority.High;
+                    message.Body += Environment.NewLine + someArrows;
+                    message.BodyEncoding = System.Text.Encoding.UTF8;
+                    message.Subject = "test message 1" + someArrows;
+                    message.SubjectEncoding = System.Text.Encoding.UTF8;
+                    message.IsBodyHtml = true;
+
+                    //here we set the unique reply to address for the outgoing email
+                    message.ReplyTo = new MailAddress(replyToAddress); //replyto+on1234un5678@domain.com
+                    // Set the method that is called back when the send operation ends.
+                    client.SendCompleted += new
+                    SendCompletedEventHandler(SendCompletedCallback);
+                    client.UseDefaultCredentials = false;
+                    NetworkCredential credentials = new NetworkCredential("usertestuserlast46@gmail.com", "xxxxxx");
+                    client.Credentials = credentials;
+                    client.EnableSsl = true;
+                    client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    client.Send(message);
+
+                    // Clean up
+                    //message.Dispose();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                //Log handling 
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="managerId"></param>
+        /// <param name="requestId"></param>
+        /// <returns></returns>
+        public ApprovaInfoDto LoadReplyByRequestIdAsync(int managerId, int requestId)
+        {
+            var allApprovalReplies = this.LoadApprovalRepliesAsync().Result;
+            var approvalInfoList = new List<ApprovaInfoDto>();
+
+            allApprovalReplies?.ToList().ForEach(x =>
+            {
+                var approvalInfo = new ApprovaInfoDto();
+                var data = x.To.Split("+");
+
+                if (data != null && data.Count() == 5)
+                {
+                    approvalInfo.ManagerId = Convert.ToInt32(data[2]);
+                    approvalInfo.RequestId = Convert.ToInt32(data[3]);
+                    approvalInfo.IsApproved = (x.Body.Contains("ApprovedOn") || x.Body.Contains("Approved"));
+
+                    approvalInfoList.Add(approvalInfo);
+                }
+            });
+
+            return approvalInfoList.Where(x => x.RequestId == requestId && x.ManagerId == managerId)?.FirstOrDefault();
+        }
+
+        /// <summary>
+        ///    
+        /// </summary>
+        /// <returns></returns>
+        private async Task<IEnumerable<POPEmail>> LoadApprovalRepliesAsync()
         {
 
             //int eid = Convert.ToInt32(Session["Email"]);
@@ -31,7 +123,7 @@ namespace Common.Email
 
             Pop3Client pop3Client = new Pop3Client();
             pop3Client.Connect("pop.gmail.com", 995, true);
-            pop3Client.Authenticate("replyams757@gmail.com", "xxxxxxx");
+            pop3Client.Authenticate("replyams757@gmail.com", "xxxxxxxx");
             // Session["Pop3Client"] = pop3Client;
 
             int count = pop3Client.GetMessageCount();
@@ -74,61 +166,11 @@ namespace Common.Email
             return emails;
         }
 
-        public async Task SendEmailInfo(int employeeId , int requestId)
-        {
-
-            try
-            {
-
-                String sReplyToadd = "replyams757@gmail.com";
-                String replyToAddress = sReplyToadd.Substring(0, sReplyToadd.IndexOf('@')) + "+on+" + employeeId + "+" + requestId + "+un" + sReplyToadd.Substring(sReplyToadd.IndexOf('@'), sReplyToadd.Length - sReplyToadd.IndexOf('@'));
-
-
-                // Command-line argument must be the SMTP host.
-                SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
-                // Specify the email sender.
-                // Create a mailing address that includes a UTF8 character
-                // in the display name.
-                MailAddress from = new MailAddress("usertestuserlast46@gmail.com",
-                   "user8767 " + (char)0xD8 + " testUserLastName",
-                System.Text.Encoding.UTF8);
-                // Set destinations for the email message.
-                MailAddress to = new MailAddress("diluka.999@gmail.com");
-                // Specify the message content.
-                using (MailMessage message = new MailMessage(from, to))
-                {
-                    message.Body = "This is a test email message sent by an application. Please do not change the To address to map your reply properly to the system.";
-                    // Include some non-ASCII characters in body and subject.
-                    string someArrows = new string(new char[] { '\u2190', '\u2191', '\u2192', '\u2193' });
-                    message.Priority = MailPriority.High;
-                    message.Body += Environment.NewLine + someArrows;
-                    message.BodyEncoding = System.Text.Encoding.UTF8;
-                    message.Subject = "test message 1" + someArrows;
-                    message.SubjectEncoding = System.Text.Encoding.UTF8;
-                    message.IsBodyHtml = true;
-
-                    //here we set the unique reply to address for the outgoing email
-                    message.ReplyTo = new MailAddress(replyToAddress); //replyto+on1234un5678@domain.com
-                    // Set the method that is called back when the send operation ends.
-                    client.SendCompleted += new
-                    SendCompletedEventHandler(SendCompletedCallback);
-                    client.UseDefaultCredentials = false;
-                    NetworkCredential credentials = new NetworkCredential("usertestuserlast46@gmail.com", "xxxxxx");
-                    client.Credentials = credentials;
-                    client.EnableSsl = true;
-                    client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                    client.Send(message);
-
-                    // Clean up
-                    //message.Dispose();
-                }
-            }
-            catch (Exception ex)
-            {
-                //Log handling 
-            }
-        }
-    
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private static void SendCompletedCallback(object sender, AsyncCompletedEventArgs e)
         {
             // Get the unique identifier for this asynchronous operation.
@@ -149,33 +191,6 @@ namespace Common.Email
             }
             mailSent = true;
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        //public bool IsApproved(string emailBody)
-        //{
-        //    string[] inWord;
-        //    string in
-
-        //    inWord = emailBody.Split(' ');
-
-        //    int wordCount = inWord.Length;
-        //    bool found = false;
-        //    int i = 0;
-        //    while (!found && i < wordCount)
-        //    {
-        //        if (txtB2 == inWord[i])
-        //        {
-
-        //            found = true;
-        //        }
-        //        i++;
-        //    }
-
-        //    return found;
-        //}
 
     }
 }

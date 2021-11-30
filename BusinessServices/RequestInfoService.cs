@@ -31,7 +31,7 @@ namespace BusinessServices
             try
             {
                var requestInfoList = await _unityOfWork.RequestInfoRepository().GetAsync();
-               var emailInfo = _emailService.SendEmailInfo(1,2);
+               var emailInfo = _emailService.SendApprovalRequestAsync(1,2,"diluka.999@gmail.com");
                return requestInfoList?.Select(x => ConvertToDomain(x));
             }
             catch (Exception ex)
